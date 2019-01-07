@@ -14,6 +14,12 @@ namespace NoBook
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "My Profile",
+                url:"Profile",
+                defaults: new { controller = "Profile", action = "Show"}
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }

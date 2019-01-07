@@ -1,0 +1,13 @@
+﻿@foreach (var profile in ViewBag.Profiles)
+{
+    <p>@profile.FirstName</p> 
+    <p>@profile.LastName</p> 
+    <a href="/Profile/Show/@profile.ProfileId">Afisare profil</a> 
+    <br /> 
+    <hr /> 
+    <br />
+}
+@if(ViewBag.count == 0)
+{
+    <h2>Nici un rezultat</h2>
+} 

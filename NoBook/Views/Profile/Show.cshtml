@@ -1,5 +1,13 @@
 ﻿@model NoBook.Models.Profile
 
 <h2>@Model.FirstName</h2>
-<br/>
+<br />
 <h2>@Model.LastName</h2>
+
+@if (ViewBag.SameUser == 1) { 
+    <button>@Html.ActionLink("Edit your profile", "Edit", "Profile")</button>
+}else{
+    <button>Send Friend Request</button>
+}
+
+@Html.Partial("~/Views/Shared/_SearchBar.cshtml")

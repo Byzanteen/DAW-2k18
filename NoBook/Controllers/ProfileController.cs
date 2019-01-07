@@ -2,6 +2,7 @@
 using NoBook.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -14,7 +15,17 @@ namespace NoBook.Controllers
         //GET: Create profile
         public ActionResult Create ()
         {
-            return View();
+            var userid = User.Identity.GetUserId();
+            var query = from pf in db.Profile
+                        where pf.UserId == userid
+                        select pf;
+
+            Profile profile = query.FirstOrDefault<Profile>();
+
+            if (profile == null || profile.Equals(default(Profile)))
+                return View();
+            else
+                return RedirectToAction("Show", "Profile", profile.ProfileId);
         }
 
         //POST: Create profile
@@ -33,12 +44,89 @@ namespace NoBook.Controllers
         }
 
         // GET: Profile
-        public ActionResult Show(int id)
+        public ActionResult Show(int? id)
         {
-            Profile profile = db.Profile.Find(id);
-            return View(profile);
+            if (id.HasValue)
+            {
+                Profile profile = db.Profile.Find(id);
+                if (User.Identity.GetUserId() != profile.UserId)
+                    ViewBag.SameUser = 0;
+                else
+                    ViewBag.SameUser = 1;
+                return View(profile);
+            }
+            else
+            { 
+            ViewBag.SameUser = 1;
+            var userid = User.Identity.GetUserId();
+            var query = from pf in db.Profile
+                        where pf.UserId == userid
+                        select pf;
+
+            Profile profile = query.FirstOrDefault<Profile>();
+            if (profile == null || profile.Equals(default(Profile)))
+                return RedirectToAction("Create", "Profile");
+            else
+                return View(profile);
+            }
         }
 
+        //GET: Edit profile
+        public ActionResult Edit(int? id)
+        {
+
+            if (id.HasValue)
+            {
+                Profile profile = db.Profile.Find(id);
+                return View(profile);
+            }
+            else
+            {
+                var userid = User.Identity.GetUserId();
+                var query = from pf in db.Profile
+                            where pf.UserId == userid
+                            select pf;
+
+                Profile profile = query.FirstOrDefault<Profile>();
+
+                if (profile == null || profile.Equals(default(Profile)))
+                    return RedirectToAction("Create", "Profile", profile.ProfileId);
+                else
+                    return View(profile);
+            }
+        }
+
+        //POST: Edit profile
+        [HttpPut]
+        public ActionResult Edit(int id, Profile profile)
+        {
+            try
+            {
+                Profile aux = db.Profile.Find(id);
+                if (TryUpdateModel(aux))
+                {
+                    aux.FirstName = profile.FirstName;
+                    aux.LastName = profile.LastName;
+                    db.SaveChanges();
+                }
+                return RedirectToAction("Show");
+            } catch (Exception e) {
+                return View();
+            }
+        }
+
+        //GET: Index
+        public ActionResult Index(string searchTerm)
+        {
+            var profiles = from pf in db.Profile
+                        where pf.FirstName.ToLower().Contains(searchTerm.ToLower()) ||
+                        pf.LastName.ToLower().Contains(searchTerm.ToLower())
+                        select pf;
+
+            ViewBag.Profiles = profiles;
+            ViewBag.count = profiles.Count<Profile>();
+            return View();
+        }
 
 
     }

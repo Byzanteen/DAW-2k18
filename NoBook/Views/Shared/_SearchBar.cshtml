@@ -1,0 +1,6 @@
+﻿<form method="get" action="/Profile/Index">
+    @Html.Label("searchTerm", "Search")
+    <br />
+    @Html.TextBox("searchTerm", null, new { @class = "form-control" })
+    <button type="submit">See profile</button>
+</form>
