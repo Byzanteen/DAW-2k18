@@ -27,6 +27,7 @@
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li>@Html.ActionLink("My Profile", "Show", "Profile", null,null)</li>
+                        <li>@Html.ActionLink("Friend Requests", "Index","FriendRequest")</li>
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")

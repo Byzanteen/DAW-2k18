@@ -1,13 +1,16 @@
 ﻿<div> 
     <form method="post" action="/Profile/Create">
-        @Html.Label("FirstName", "First Name")     
+        @Html.Label("FirstName", "First Name")
         <br />
         @Html.TextBox("FirstName", null, new { @class = "form-control" })
-        <br /><br />     
-        @Html.Label("LastName", "Last Name")     
-        <br />     
-        @Html.TextBox("LastName", null, new { @class = "form-control" })     
-        <br />    
+        <br /><br />
+        @Html.Label("LastName", "Last Name")
+        <br />
+        @Html.TextBox("LastName", null, new { @class = "form-control" })
+        <br />
+        @Html.Label("IsPublic", "Public Profile?")
+        <br />
+        @Html.CheckBox("IsPublic",true,new { @class = "form-control"})
         <button type="submit">Save profile</button>
     </form>
 </div>

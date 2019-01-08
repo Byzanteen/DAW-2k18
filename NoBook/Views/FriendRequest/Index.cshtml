@@ -1,0 +1,40 @@
+﻿@if (ViewBag.Message != null)
+{
+    <h1>Error @ViewBag.Message</h1>
+}
+else
+{
+    if (ViewBag.ToMeMessage != null)
+    {
+        <h1>@ViewBag.ToMeMessage</h1>
+    }
+    else
+    {
+        <h4>Received Requests</h4>
+        <ul>
+            @foreach (var fr in ViewBag.ToMe)
+            {
+                <li>@fr.Requester.FirstName @fr.Requester.LastName</li>
+                <button>
+                    <a href="/FriendRequest/Accept/@fr.RequestId">Accept Request</a>
+                </button>
+             }
+            </ul>
+    }
+    if (ViewBag.ByMeMessage != null)
+    {
+        <h1>@ViewBag.ByMeMessage</h1>
+    }
+    else
+    {
+        <h4>Sent Requests</h4>
+        <ul>
+            @foreach (var fr in ViewBag.ByMe)
+            {
+                <li>@fr.Requestee.FirstName @fr.Requestee.LastName</li>
+                
+            }
+        </ul>
+    }
+
+}

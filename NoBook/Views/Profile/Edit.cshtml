@@ -5,12 +5,15 @@
         @Html.HttpMethodOverride(HttpVerbs.Put)
         @Html.Label("FirstName", "First Name")
         <br />
-        @Html.TextBox("FirstName", @Model.FirstName, new { @class = "form-control" })
+        @Html.TextBox("FirstName", Model.FirstName, new { @class = "form-control" })
         <br /><br />
         @Html.Label("LastName", "Last Name")
         <br />
-        @Html.TextBox("LastName", @Model.LastName, new { @class = "form-control" })
+        @Html.TextBox("LastName", Model.LastName, new { @class = "form-control" })
         <br />
+        @Html.Label("IsPublic", "Public Profile?")
+        <br />
+        @Html.CheckBox("IsPublic", Model.IsPublic, new { @class = "form-control" })
         <button type="submit">Save profile</button>
     </form>
 </div>

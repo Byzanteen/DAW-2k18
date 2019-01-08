@@ -1,13 +1,48 @@
 ﻿@model NoBook.Models.Profile
 
-<h2>@Model.FirstName</h2>
-<br />
-<h2>@Model.LastName</h2>
+@if ((ViewBag.SameUser == 1 && User.Identity.IsAuthenticated) || Model.IsPublic)
+{
+    <h2>@Model.FirstName</h2>
+    <br />
+    <h2>@Model.LastName</h2>
 
-@if (ViewBag.SameUser == 1) { 
-    <button>@Html.ActionLink("Edit your profile", "Edit", "Profile")</button>
-}else{
-    <button>Send Friend Request</button>
+    <ul>
+        @foreach (var friend in Model.Friends)
+        {
+            <li>@friend.FirstName @friend.LastName</li>
+            <button>@Html.ActionLink("Show Profile", "Show", "Profile", friend.ProfileId, null)</button>
+            <br />
+        }
+    </ul>
+
+
+}
+else
+{
+    <h2>This profile is not public</h2>
 }
 
-@Html.Partial("~/Views/Shared/_SearchBar.cshtml")
+@if (User.Identity.IsAuthenticated)
+{
+    if (ViewBag.SameUser == 1)
+    {
+        <button>@Html.ActionLink("Edit your profile", "Edit", "Profile")</button>
+    }
+    else if (ViewBag.RequestedByMe == 1)
+    {
+        <p>Friend request sent</p>
+    }
+    else if (ViewBag.RequestedByThem == 1)
+    {
+        <p>They requested your friendship</p>
+    }
+    else if (ViewBag.Friend == 1)
+    {
+        <p>You are friends</p>
+    }
+    else
+    {
+        <button><a href="/FriendRequest/Create/@Model.ProfileId">Send Friend Request</a></button>
+
+    }
+}

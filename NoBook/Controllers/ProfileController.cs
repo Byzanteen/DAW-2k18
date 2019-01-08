@@ -46,18 +46,55 @@ namespace NoBook.Controllers
         // GET: Profile
         public ActionResult Show(int? id)
         {
+            ViewBag.SameUser = 1;
+            ViewBag.Friend = 0;
+            ViewBag.RequestedByMe = 0;
+            ViewBag.RequestedByThem = 0;
+
             if (id.HasValue)
             {
                 Profile profile = db.Profile.Find(id);
-                if (User.Identity.GetUserId() != profile.UserId)
-                    ViewBag.SameUser = 0;
-                else
-                    ViewBag.SameUser = 1;
+
+                var userid = User.Identity.GetUserId();
+                var query = from pf in db.Profile
+                            where pf.UserId == userid
+                            select pf;
+
+                Profile myProfile = query.FirstOrDefault<Profile>();
+
+                if (myProfile != null && !myProfile.Equals(default(Profile)))
+                {
+
+                    if (User.Identity.GetUserId() != profile.UserId)
+                    {
+                        ViewBag.SameUser = 0;
+                    }
+
+                    if (profile.Friends.Contains(myProfile))
+                    {
+                        ViewBag.Friend = 1;
+                    }
+
+
+                    foreach(FriendRequestModel freq in profile.FriendRequests)
+                    {
+                        if(freq.Requestee.ProfileId == myProfile.ProfileId)
+                        {
+                            ViewBag.RequestedByThem = 1;
+                            break;
+                        }
+                        if(freq.Requester.ProfileId == myProfile.ProfileId)
+                        {
+                            ViewBag.RequestedByMe = 1;
+                            break;
+                        }
+                    }
+
+                }
                 return View(profile);
             }
             else
             { 
-            ViewBag.SameUser = 1;
             var userid = User.Identity.GetUserId();
             var query = from pf in db.Profile
                         where pf.UserId == userid
