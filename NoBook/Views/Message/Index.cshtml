@@ -1,0 +1,21 @@
+﻿@{ ViewBag.count = 0;}
+
+@foreach (var ms in ViewBag.messages)
+{
+    if (ms.Sender == ViewBag.id)
+    {
+        <i>His</i>
+    }
+    else
+    {
+        <i>Mine</i>
+    }
+    <p>@ms.Text</p>
+    <br />
+    ViewBag.count++;
+}
+@if (ViewBag.count == 0)
+{
+    <p>No messages</p>
+}
+<button><a href="/Message/Create/@ViewBag.id">Send New Message</a></button>

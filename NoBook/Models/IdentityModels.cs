@@ -27,6 +27,7 @@ namespace NoBook.Models
 
         public DbSet<Profile> Profile { get; set; }
         public DbSet<FriendRequestModel> FriendRequests { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
         public static ApplicationDbContext Create()
         {

@@ -1,0 +1,15 @@
+﻿@model NoBook.Models.Message
+
+@if(ViewBag.Error != null)
+{
+    <p>@ViewBag.Error</p>
+}
+<form method="post" action="/Message/Create">
+
+    @Html.Label("Text", "Text")
+    <br />
+    @Html.TextBox("Text", null, new { @class = "form-control" })
+    <br /><br />
+    @Html.Hidden("Receiver",(int)ViewBag.id)
+    <button type="submit">Send Message</button>
+</form>

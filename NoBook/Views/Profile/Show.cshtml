@@ -45,4 +45,8 @@ else
         <button><a href="/FriendRequest/Create/@Model.ProfileId">Send Friend Request</a></button>
 
     }
+    if (ViewBag.SameUser != 1)
+    {
+        <button><a href="/Message/Index/@Model.ProfileId">Text with them</a></button>
+    }
 }
